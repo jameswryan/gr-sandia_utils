@@ -108,6 +108,10 @@ file_sink_impl::file_sink_impl(std::string data_type,
             (uint64_t)tp.tv_sec, 0.0, 1.0 / (double)d_file_writer->get_rate());
     }
 
+    if (!fs::is_directory(d_out_dir)) {
+        throw std::runtime_error("Not a directory: " + d_out_dir);
+    }
+
     // setup output message portion
     message_port_register_out(PMTCONSTSTR__pdu());
 }
@@ -391,9 +395,6 @@ bool file_sink_impl::start()
     if (d_type == "message") {
         // open output file
         fs::path temp_dir = fs::path(d_out_dir);
-        if (not fs::is_directory(temp_dir)) {
-            throw std::runtime_error("Invalid output path");
-        }
         fs::path outfile = temp_dir / d_name_spec;
         d_msg_file.open(outfile.string().c_str(), std::ifstream::binary);
     }

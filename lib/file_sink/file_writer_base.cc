@@ -1,4 +1,3 @@
-/* -*- c++ -*- */
 /*
  * Copyright 2018, 2019, 2020 National Technology & Engineering Solutions of Sandia, LLC
  * (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S. Government
@@ -101,6 +100,11 @@ namespace gr {
         if (rate <= 0) {
             throw std::runtime_error(
                 "file_sink:invalid sample rate: value must be greater than zero");
+        }
+
+	// ensure output directory is real
+        if (!fs::is_directory(out_dir)) {
+            throw std::runtime_error("file_sink:not a directory" + out_dir);
         }
 
         // initialize all members
@@ -256,9 +260,7 @@ namespace gr {
       fs::path temp_dir = fs::path(d_out_dir);
       if (not fs::is_directory(temp_dir))
       {
-        // TODO: Provide better debug information
-//         throw std::runtime_error(boost::format("Invalid output path %s") % d_out_dir);
-        throw std::runtime_error("Invalid output path");
+        throw std::runtime_error("Invalid output path" + d_out_dir);
       }
 
       if (d_new_folder){
