@@ -51,7 +51,7 @@ parameters:
     category: File Options
     dtype: string
     default: '""'
-    hide: ${ ('all' if type == 'message' else 'part') }
+    hide: ${ ('none' if type == 'message' else 'part') }
 -   id: create_new_dir
     label: Create New Directory?
     category: File Options
